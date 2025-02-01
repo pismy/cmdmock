@@ -1,0 +1,13 @@
+# included templates
+include:
+  # Python template
+  - component: "$CI_SERVER_FQDN/to-be-continuous/python/gitlab-ci-python@7"
+    inputs:
+      image: "registry.hub.docker.com/library/python:3.12-slim"
+      ruff-enabled: true
+      trivy-disabled: true
+      release-enabled: true
+  # semantic-release template
+  - component: "$CI_SERVER_FQDN/to-be-continuous/semantic-release/gitlab-ci-semrel@3"
+    inputs:
+      auto-release-enabled: true
