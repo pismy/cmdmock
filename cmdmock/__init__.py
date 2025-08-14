@@ -186,11 +186,11 @@ class Mock(BaseJson):
 
     def pretty(self, args: str):
         if self.kind == MockKind.stub:
-            return f"{BLUE(args) if args else CYAN(DFLT_ARG)} ❯ {PURPLE('stub')} {RED('rc='+str(self.returncode)) if self.returncode else GREEN('rc=0')}{', stdout' if self.stdout else ''}{', ' + YELLOW('⏲ ' + str(self.times)) if self.times else ''}"
+            return f"{BLUE(args) if args else CYAN(DFLT_ARG)} ❯ {PURPLE('stub')} {RED('rc=' + str(self.returncode)) if self.returncode else GREEN('rc=0')}{', stdout' if self.stdout else ''}{', ' + YELLOW('⏲ ' + str(self.times)) if self.times else ''}"
         if self.kind == MockKind.spy:
             return f"{BLUE(args) if args else CYAN(DFLT_ARG)} ❯ {PURPLE('spy')}"
         if self.kind == MockKind.fake:
-            return f"{BLUE(args) if args else CYAN(DFLT_ARG)} ❯ {PURPLE('fake')} {BLACK('impl='+self.impl, Color.BRIGHT)}"
+            return f"{BLUE(args) if args else CYAN(DFLT_ARG)} ❯ {PURPLE('fake')} {BLACK('impl=' + self.impl, Color.BRIGHT)}"
 
 
 def cli_reset(args):
