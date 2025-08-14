@@ -544,7 +544,7 @@ def proxy_call():
             if cmd_mocks.get(DFLT_ARG):
                 args_pattern = None
                 mock = Mock.from_json(cmd_mocks[DFLT_ARG])
-                match = re.match("", args)
+                match = re.match(".*", args)
             # look for a mock that matches the args pattern
             for mock_args in cmd_mocks.keys():
                 if mock_args == DFLT_ARG:
