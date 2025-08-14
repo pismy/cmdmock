@@ -21,7 +21,7 @@ cmdmock = "cmdmock:main"
 
 [tool.poetry.group.dev.dependencies]
 # new development dependencies can be added with 'poetry add -D yyy'
-ruff = "^0.8.0"
+ruff = "^0.12.8"
 
 [tool.ruff.lint]
 extend-select = ["I"] # isort
