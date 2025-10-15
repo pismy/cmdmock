@@ -55,10 +55,16 @@ options:
   --no-color            Disable colored output
 
 subcommands:
-  valid subcommands
-
   {stub,spy,fake,del,show,import,export,logs,reset}
-                        Manage mocks, configuration and execution logs...
+    stub                Install a stub
+    spy                 Install a spy
+    fake                Install a fake
+    del                 Uninstall a mock
+    show                Show installed mocks
+    import              Import configuration
+    export              Export configuration
+    logs                Filter and display mock invocations
+    reset               Reset mock invocation logs
 
 examples:
   cmdmock stub systemctl
@@ -73,11 +79,11 @@ examples:
   cmdmock import < mocks.json
                         Import the mocks configuration from mocks.json
   cmdmock export        Export the actual mocks configuration to stdout
-  cmdmock logs          Display all execution logs (textual format)
+  cmdmock logs          Display all mock invocation logs (textual format)
   cmdmock logs -f=json systemctl
-                        Display execution logs from 'systemctl' commands in JSON format
-  cmdmock reset         Reset execution logs
-  cmdmock reset --all   Reset execution logs and mocks configuration
+                        Display mock invocation logs from 'systemctl' commands in JSON format
+  cmdmock reset         Reset mock invocation logs
+  cmdmock reset --all   Reset mock invocation logs and mocks configuration
 ```
 
 `cmdmock` supports the following subcommands:
@@ -89,8 +95,8 @@ examples:
 - [`show`](#show-installed-mocks): Shows installed mocks
 - [`export`](#export-the-mock-configuration): Exports the mocks configuration file (JSON)
 - [`import`](#import-the-mocks-configuration): Imports the mocks configuration from a (JSON) file
-- [`logs`](#print-the-execution-logs): Prints the execution logs
-- [`reset`](#reset-the-execution-logs): Resets the execution logs
+- [`logs`](#print-the-mock-invocation-logs): Prints the mock invocation logs
+- [`reset`](#reset-the-mock-invocation-logs): Resets the mock invocation logs
 
 ### Install a stub
 
@@ -215,12 +221,12 @@ options:
                         Input file (default: stdin)
 ```
 
-### Print the execution logs
+### Print the mock invocation logs
 
 ```
 usage: cmdmock logs [-h] [-f {text,json}] [-F] [command] [args]
 
-Prints the execution logs.
+Prints the mock invocation logs.
 
 positional arguments:
   command               Command name
@@ -233,21 +239,21 @@ options:
   -F, --fail            Fail if no log matching command and args
 
 examples:
-  cmdmock logs          Display all execution logs (textual format)
+  cmdmock logs          Display all mock invocation logs (textual format)
   cmdmock logs -f=json systemctl
-                        Display execution logs from 'systemctl' commands in JSON format
+                        Display mock invocation logs from 'systemctl' commands in JSON format
   cmdmock logs systemctl 'show .*' | wc -l
                         Count the number of times 'systemctl show .*' was call (used with wc)
   cmdmock logs -f=json systemctl | jq -r '.args'
                         Extracts the arguments of each 'systemctl' invocation (used with jq)
 ```
 
-### Reset the execution logs
+### Reset the mock invocation logs
 
 ```
 usage: cmdmock reset [-h] [-a]
 
-Resets the execution logs.
+Resets the mock invocation logs.
 
 options:
   -h, --help  show this help message and exit

@@ -194,10 +194,10 @@ class Mock(BaseJson):
 
 
 def cli_reset(args):
-    # delete execution logs
+    # delete mock invocation logs
     if MOCKS_EXEC_FILE.exists():
         MOCKS_EXEC_FILE.unlink()
-    print(f"{GREEN('✓')} execution logs reset", file=sys.stderr)
+    print(f"{GREEN('✓')} mock invocation logs reset", file=sys.stderr)
 
     if args.all:
         # delete mocks definition file if exists
@@ -288,7 +288,7 @@ def cli_show(args):
 
 
 def cli_logs(args):
-    # open execution logs file and print it
+    # open mock invocation logs file and print it
     if not MOCKS_EXEC_FILE.exists():
         return
     logs_count = 0
@@ -597,11 +597,11 @@ def cli():
   %(prog)s import < mocks.json
                         Import the mocks configuration from mocks.json
   %(prog)s export        Export the actual mocks configuration to stdout
-  %(prog)s logs          Display all execution logs (textual format)
+  %(prog)s logs          Display all mock invocation logs (textual format)
   %(prog)s logs -f=json systemctl
-                        Display execution logs from 'systemctl' commands in JSON format
-  %(prog)s reset         Reset execution logs
-  %(prog)s reset --all   Reset execution logs and mocks configuration
+                        Display mock invocation logs from 'systemctl' commands in JSON format
+  %(prog)s reset         Reset mock invocation logs
+  %(prog)s reset --all   Reset mock invocation logs and mocks configuration
 """,
     )
     parser.add_argument(
@@ -611,13 +611,12 @@ def cli():
     )
     subparsers = parser.add_subparsers(
         title="subcommands",
-        description="valid subcommands",
-        help="Manage mocks, configuration and execution logs...",
     )
 
     # 'add stub' sub-command
     add_stub_parser = subparsers.add_parser(
         "stub",
+        help="Install a stub",
         description="Installs a stub for the specified command signature.",
         epilog="Every call to the specified command signature will be intercepted and replaced with the stub implementation.",
     )
@@ -659,6 +658,7 @@ def cli():
     # 'add spy' sub-command
     add_spy_parser = subparsers.add_parser(
         "spy",
+        help="Install a spy",
         description="Installs a spy for the specified command signature.",
         epilog="Every call to the specified command signature will be intercepted and recorded by the tool. The original command will still be called.",
     )
@@ -681,6 +681,7 @@ def cli():
     # 'add fake' sub-command
     add_fake_parser = subparsers.add_parser(
         "fake",
+        help="Install a fake",
         description="Installs a fake for the specified command signature.",
         epilog="Every call to the specified command signature will be intercepted and replaced with the provided alternate (fake) implementation.",
     )
@@ -709,6 +710,7 @@ def cli():
     # 'del' sub-command
     delete_parser = subparsers.add_parser(
         "del",
+        help="Uninstall a mock",
         description="Uninstalls the mock associated to the specified command signature.",
     )
     delete_parser.set_defaults(func=cli_delete_mock)
@@ -724,12 +726,14 @@ def cli():
     # show sub-command
     show_parser = subparsers.add_parser(
         "show",
+        help="Show installed mocks",
         description="Shows installed mocks.",
     )
     show_parser.set_defaults(func=cli_show)
     # import sub-command
     import_parser = subparsers.add_parser(
         "import",
+        help="Import configuration",
         description="Imports the mocks configuration.",
     )
     import_parser.set_defaults(func=cli_import)
@@ -743,6 +747,7 @@ def cli():
     # export sub-command
     export_parser = subparsers.add_parser(
         "export",
+        help="Export configuration",
         description="Exports the mocks configuration.",
     )
     export_parser.set_defaults(func=cli_export)
@@ -756,12 +761,13 @@ def cli():
     # logs sub-command
     logs_parser = subparsers.add_parser(
         "logs",
-        description="Prints the execution logs.",
+        help="Filter and display mock invocations",
+        description="Filters and displays mock invocations.",
         formatter_class=argparse.RawTextHelpFormatter,
         epilog="""examples:
-  %(prog)s          Display all execution logs (textual format)
+  %(prog)s          Display all mock invocation logs (textual format)
   %(prog)s -f=json systemctl
-                        Display execution logs from 'systemctl' commands in JSON format
+                        Display mock invocation logs from 'systemctl' commands in JSON format
   %(prog)s systemctl 'show .*' | wc -l
                         Count the number of times 'systemctl show .*' was call (used with wc)
   %(prog)s -f=json systemctl | jq -r '.args'
@@ -795,7 +801,8 @@ def cli():
     # reset sub-command
     reset_parser = subparsers.add_parser(
         "reset",
-        description="Resets the execution logs.",
+        help="Reset mock invocation logs",
+        description="Resets mock invocation logs.",
     )
     reset_parser.set_defaults(func=cli_reset)
     reset_parser.add_argument(
