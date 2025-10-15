@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "cmdmock"
-version = "1.0.0"
+version = "1.1.0"
 description = "a simplistic mocking framework for CLI commands"
 authors = [{ name = "Pierre Smeyers", email = "pierre.smeyers@gmail.com" }]
 license = "MIT"
